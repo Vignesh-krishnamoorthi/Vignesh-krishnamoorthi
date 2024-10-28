@@ -1,0 +1,17 @@
+1) Identify upstream and downstream
+2) Data collection:
+metrics on service interactions, such as request counts and response times.
+Use logging and monitoring tools to track how often each service is called.
+3) Dependency Metrics:
+Define what constitutes a dependency (e.g., API calls, shared databases).
+Determine the weight of each dependency based on its importance or frequency of use.
+4) 
+
+Assume the following weighted scores for an upstream service:
+
+Weights and Normalized Scores:
+Call frqncy: 0.4 * 0.8 = 0.32
+data vol: 0.3 * 0.6 = 0.18
+resp time: 0.2 * 0.9 = 0.18
+err rate: 0.1 * 0.2 = 0.02
+sum: 0.32 + 0.18 + 0.18 + 0.02 = 0.67
