@@ -18,3 +18,71 @@ sum: 0.32 + 0.18 + 0.18 + 0.02 = 0.67
 
 
 Dependency Percentage=(Total Functionality Calls/Number of Upstream Calls )×100
+
+
+Risk Description	Likelihood (1-5)	Impact (1-5)	Risk Score (L × I)	Mitigation Strategies
+Data Breach	4	5	20	Implement strong encryption
+Service Downtime	3	4	12	Redundant systems
+Performance Degradation	2	3	6	Optimize network configuration
+
+Risk Score=Likelihood×Impact
+
+Likelihood Assessment: Estimate the probability of each risk occurring using historical data or expert judgment. This can be rated on a scale (e.g., 1 to 5).
+Impact Analysis: Evaluate the potential impact of each risk on the organization if it were to occur. This should also be rated on a similar scale.
+
+Identify Risks: List potential risks associated with both applications, such as data breaches, service downtime, or performance degradation due to heavy traffic.
+Categorize Risks: Classify these risks into relevant categories (e.g., cybersecurity, operational, compliance).
+
+
+-----------
+
+Consider employing more sophisticated methods for risk calculation:
+FAIR (Factor Analysis of Information Risk): This method breaks down risks into components such as threat event frequency, vulnerability, and loss magnitude:
+Risk=Probability of Threat Event×
+Vulnerability
+×
+Impact
+Risk=Probability of Threat Event×Vulnerability×Impact
+Weighted Average Method: This involves calculating a mean of risk scores while applying weights to reflect the relative importance of different risks.
+High Water Mark Method: Use this method to identify the highest risk score among all identified risks, focusing on the most critical threats.
+---------------
+
+Assuming you have calculated the following scores:
+Total Risk Score = 100
+Upstream Risk Score = 30
+Upstream of Upstream Risk Score = 20
+You would calculate:
+Percentage of Upstream Risk:
+(
+30
+100
+)
+×
+100
+=
+30
+%
+( 
+100
+30
+​
+ )×100=30%
+Percentage of Upstream of Upstream Risk:
+(
+20
+100
+)
+×
+100
+=
+20
+%
+( 
+100
+20
+​
+ )×100=20%
+
+---------------------------------------
+
+
