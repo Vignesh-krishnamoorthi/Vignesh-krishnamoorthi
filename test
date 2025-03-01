@@ -43,3 +43,34 @@ input_string = "Example - This is the text I want"
 result = input_string[input_string.find('-') + 1:].strip() if '-' in input_string else None
 
 print(result) # Output: This is the text I want
+
+--------------
+
+def csv_to_insert_statements(csv_file, table_name, output_sql_file="insert_statements.sql"):
+    """
+    Reads a CSV file and generates SQL INSERT statements for each row.
+
+    Args:
+        csv_file: Path to the input CSV file.
+        table_name: Name of the SQL table.
+        output_sql_file: Path to the output SQL file.
+    """
+    try:
+        with open(csv_file, 'r', newline='', encoding='utf-8') as csvfile, \
+             open(output_sql_file, 'w', encoding='utf-8') as sqlfile:
+
+            reader = csv.reader(csvfile)
+            header = next(reader, None)  # Read the header row (optional)
+
+            for row in reader:
+                values = ', '.join(f"'{value}'" if isinstance(value, str) else str(value) for value in row) #Handles strings and numbers.
+                insert_statement = f"INSERT INTO {table_name} VALUES ({values});\n"
+                sqlfile.write(insert_statement)
+
+        print(f"SQL INSERT statements written to {output_sql_file}")
+
+    except FileNotFoundError:
+        print(f"Error: CSV file not found at {csv_file}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
