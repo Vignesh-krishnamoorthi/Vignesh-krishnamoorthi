@@ -37,3 +37,9 @@ try:
         print(f"Variables successfully written to {output_csv_file}")
     except Exception as e:
         print(f"Error writing to CSV: {e}")
+
+
+input_string = "Example - This is the text I want"
+result = input_string[input_string.find('-') + 1:].strip() if '-' in input_string else None
+
+print(result) # Output: This is the text I want
