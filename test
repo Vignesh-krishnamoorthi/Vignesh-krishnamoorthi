@@ -1,0 +1,30 @@
+import pandas as pd
+
+def combine_and_store_in_excel(var1, var2, var3, output_excel_file="combined_strings.xlsx"):
+    """
+    Combines three single string variables into a single row of an Excel file.
+
+    Args:
+        var1: The first string.
+        var2: The second string.
+        var3: The third string.
+        output_excel_file: The name of the output Excel file.
+    """
+
+    # Create a pandas DataFrame with a single row
+    data = {'Column1': [var1], 'Column2': [var2], 'Column3': [var3]}
+    df = pd.DataFrame(data)
+
+    # Store the DataFrame in an Excel file
+    try:
+        df.to_excel(output_excel_file, index=False)
+        print(f"Data successfully written to {output_excel_file}")
+    except Exception as e:
+        print(f"Error writing to Excel: {e}")
+
+# Example usage:
+string1 = "Hello"
+string2 = "World"
+string3 = "Python"
+
+combine_and_store_in_excel(string1, string2, string3)
