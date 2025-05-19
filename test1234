@@ -1,93 +1,53 @@
-# Import necessary modules from selenium
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import WebDriverException
+import requests
 
-def get_screen_details_selenium(url):
+def check_url_status_requests(url):
     """
-    Opens a URL using a headless Chrome browser and retrieves screen details.
+    Checks the HTTP status code of a given URL using requests, mimicking a browser request.
 
     Args:
-        url (str): The URL to open.
+        url (str): The URL to check.
 
     Returns:
-        dict: A dictionary containing screen details (like window size),
-              or None if an error occurred.
+        int: The HTTP status code, or None if an error occurred.
     """
-    # --- Setup Chrome Options ---
-    # Configure Chrome to run in headless mode (without opening a browser window)
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    # Optional: Add other arguments for better compatibility or performance
-    chrome_options.add_argument("--no-sandbox") # Bypass OS security model
-    chrome_options.add_argument("--disable-dev-shm-usage") # Overcome limited resource problems
-    chrome_options.add_argument("--window-size=1920,1080") # Set a default window size
+    # Define headers to mimic a common browser
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Connection': 'keep-alive',
+    }
 
-    # --- Setup WebDriver Service ---
-    # You need to have chromedriver installed and accessible in your PATH,
-    # or specify its location. Replace 'chromedriver_path' with the actual path
-    # if it's not in your PATH.
-    # Example (if chromedriver is in the same directory as the script):
-    # service = Service('./chromedriver')
-    # Example (if chromedriver is in your PATH):
-    service = Service() # Assumes chromedriver is in your system's PATH
+    print(f"Checking URL: {url} using requests...")
 
-    driver = None # Initialize driver to None
     try:
-        # --- Initialize WebDriver ---
-        # Use the Service object and options to initialize the Chrome driver
-        print("Initializing Selenium WebDriver...")
-        driver = webdriver.Chrome(service=service, options=chrome_options)
-        print("WebDriver initialized.")
+        # Make a GET request to the URL with specified headers
+        response = requests.get(url, headers=headers, timeout=10) # Added a timeout for safety
+        status_code = response.status_code
 
-        # --- Navigate to the URL ---
-        print(f"Navigating to URL: {url}")
-        driver.get(url)
-        print("Page loaded.")
+        print(f"Received Status Code: {status_code}")
 
-        # --- Get Screen Details ---
-        # Get the window size
-        window_size = driver.get_window_size()
-        print(f"Window Size: {window_size['width']}x{window_size['height']}")
+        if status_code == 200:
+            print("Status: 200 OK - The request was successful.")
+        elif status_code == 503:
+            print("Status: 503 Service Unavailable - The server is currently unable to handle the request.")
+            print("This matches the error observed in the browser.")
+        else:
+            print(f"Status: {status_code} - An unexpected status code was received.")
 
-        # You could also take a screenshot:
-        # driver.save_screenshot("screenshot.png")
-        # print("Screenshot saved as screenshot.png")
+        return status_code
 
-        # --- Store Details ---
-        screen_details = {
-            "window_width": window_size['width'],
-            "window_height": window_size['height']
-            # Add other details here if needed
-        }
-
-        return screen_details
-
-    except WebDriverException as e:
-        print(f"A WebDriver error occurred: {e}")
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred while trying to connect to {url}: {e}")
         return None
     except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+        # Handle any other unexpected errors
+        print(f"An unexpected error occurred for {url}: {e}")
         return None
-    finally:
-        # --- Quit WebDriver ---
-        # Ensure the browser is closed even if an error occurs
-        if driver:
-            print("Quitting WebDriver.")
-            driver.quit()
 
 # --- Example Usage ---
 if __name__ == "__main__":
     # Replace with the actual URL you are testing
     test_url = "YOUR_APPLICATION_URL_HERE" # <<<--- IMPORTANT: Replace with your URL
 
-    details = get_screen_details_selenium(test_url)
-
-    if details:
-        print("\n--- Retrieved Screen Details ---")
-        print(f"Window Width: {details['window_width']}")
-        print(f"Window Height: {details['window_height']}")
-    else:
-        print("\nFailed to retrieve screen details.")
-
+    check_url_status_requests(test_url)
